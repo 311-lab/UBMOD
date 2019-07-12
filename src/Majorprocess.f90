@@ -233,7 +233,7 @@
 		sink1d(j)=0.
 		thdry=(Thw(M)+par(1,M))/2. !
 		fEact=MAX((Th(j)-Thdry)/(ThF(M)-Thdry),0D0)
-        fEact = 1.0
+!        fEact = 1.0
 		Eact=fEact*Epi(j)*dt
 		Epa=Epa+Eact !m/d
         p=ptab+0.04*(5-Tri(j))
@@ -326,7 +326,7 @@
             A(i,i) = dz(i)/deltat+2*sqrt(D(i-1)*D(i))/(dz(i-1)+dz(i))+2*sqrt(D(i+1)*D(i))/(dz(i+1)+dz(i))
             A(i,i+1) = -2*sqrt(D(i+1)*D(i))/(dz(i+1)+dz(i))
             A(i,i-1) = -2*sqrt(D(i-1)*D(i))/(dz(i-1)+dz(i))
-            ! correction£¬ 
+            ! correctionÂ£Â¬ 
             correction1 = (S(i)+S(i-1))/2*(par(2,m1)-par(2,m))+(2.0-S(i)-S(i-1))/2*(par(1,m1)-par(1,m))+(dern(i)+dern(i-1))/2*(par_n(m1)-par_n(m))
             correction2 = (S(i)+S(i+1))/2*(par(2,m11)-par(2,m))+(2.0-S(i)-S(i+1))/2*(par(1,m11)-par(1,m))+(dern(i)+dern(i+1))/2*(par_n(m11)-par_n(m))            
             !WRITE(99,*)(S(i)+S(i-1))/2*(par(2,m1)-par(2,m))/correction1,(2.0-S(i)-S(i-1))/2*(par(1,m1)-par(1,m))/correction1,(dern(i)+dern(i-1))/2*(par_n(m1)-par_n(m))/correction1

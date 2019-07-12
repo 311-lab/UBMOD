@@ -18,7 +18,7 @@ index | name | content
 -|-|-
 A | Source code  | src|
 B |  Demo file   | Rh1D.in, Rh1D.out|
-C |  Document    | tech.docx|
+C |  Document    | tech.pdf|
 
 ### A. Source code
 totally 8 files  

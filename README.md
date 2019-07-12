@@ -1,13 +1,17 @@
 # UBMOD
 
 ## Introduction
-This repository serves as the source code repository of the Unsaturated zone soil water Balance Model, known as UBMOD. The model a one-dimensional soil water balance model for simulating both downward and upward soil water movement. The model was designed by Wei Mao, Yan Zhu, Tianxing Zhao and Jinzhong yang. The [[Paper](https://www.sciencedirect.com/science/article/pii/S0022169418301562)] can be find here.
+This repository serves as the source code repository of the Unsaturated zone soil water Balance Model, known as UBMOD. The model a one-dimensional soil water balance model for simulating both downward and upward soil water movement. The model was designed by Wei Mao, Yan Zhu, Tianxing Zhao and Jinzhong yang. The [[Paper](https://www.sciencedirect.com/science/article/pii/S0022169418301562)] can be find here.  
+
+UBMOD can simulate both upward and downward flow in the unsaturated zone. The accommodation of the model to the upward flow, complex boudnary conditions, and soil heterogeneity conditions have been demonstrated. What's more, the model keeps mass balance well, and can give satisfactory results with coarse spatial and temporal discretization. Only four physical meaning soil hydraulic parameters are essential to calculate the soil water movement. All of these make the model more applicable in practice.
 
 ## Requirements
 Fortran 90
 
 ## concept map
+![Concmap](https://github.com/Weiwei-Mao/UBMOD/blob/master/images/UBMOD.png)
 
+There are four major components to describe the soil water movement in UBMOD model, as shown in the figure. Firstly, the vertical soil column is divided into a cascade of “buckets” and each “bucket” corresponds to a soil layer. The “buckets” will be filled to saturation from the top layer to the bottom layer if there is infiltration, which is referred as the allocation of infiltration water. Secondly, when the soil water content exceeds the field capacity, the soil water will move downward driven by the gravitational potential. Thirdly, the source/sink terms are used to account for soil evaporation and crop transpiration. Lastly, we calculate the diffusive movement driven by the matric potential.
 
 ## Table of contents
 index | name | content

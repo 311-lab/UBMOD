@@ -7,7 +7,7 @@
 !   date1       The first date [yyyymmdd].
 !   date2       The second date [yyyymmdd].
 ! =========================Outcoming variables========================
-!  nd          The different day between date1 and date2 [d].
+!   nd          The different day between date1 and date2 [d].
 ! ====================================================================
     SUBROUTINE Datediff(date1,date2,nd)
     IMPLICIT NONE

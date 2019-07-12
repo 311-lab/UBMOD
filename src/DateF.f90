@@ -26,9 +26,9 @@
 !   Purpose: IF leap year or not.
 ! ====================================================================
 ! =========================Incoming variables=========================
-!	year        The imput year [yyyymmdd].
+!   year        The imput year [yyyymmdd].
 ! =========================Outcoming variables========================
-!	ifrun       1 for leap year; 0 for others.
+!   ifrun       1 for leap year; 0 for others.
 ! ====================================================================
     INTEGER Function ifrun(year)
     IMPLICIT NONE

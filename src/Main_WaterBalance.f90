@@ -1,7 +1,7 @@
 ! ===================================================================!
-!	UBMOD  -- Water balance method of one-dimensional soil water     !
+!   UBMOD  -- Water balance method of one-dimensional soil water     !
 !             movement. Version 1.0.                                 !
-!	                                                                 !
+!                                                                    !
 !   Designed by Wei Mao, Yan Zhu and Jinzhong Yang.                  !
 !                                                                    !
 !   Cited: Mao W, Yang J, Zhu Y, et al. An efficient soil water      !
@@ -27,8 +27,8 @@
 !     Output files:
 !         
 ! ====================================================================
-!	storage Routing Method~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!	*************************end of documentation.	
+!   storage Routing Method~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!   *************************end of documentation.	
     PROGRAM WaterBalance
     USE parm
     IMPLICIT NONE
@@ -42,7 +42,7 @@
 !   input files
     OPEN(33,file='Rh1D.in/'//trim(iof)//'/SELECTOR.IN', status='old')
     OPEN(32,file='Rh1D.in/'//trim(iof)//'/uz.IN',       status='old')
-!	output files
+!   output files
     OPEN(90,file='Rh1D.out/'//trim(iof)//'/runtime.OUT',  status='unknown') ! Run time.
     OPEN(80,file='Rh1D.out/'//trim(iof)//'/thObs.dat',    status='unknown') ! Node data.
     OPEN(89,file='Rh1D.out/'//trim(iof)//'/balance1d.dat',status='unknown') ! Statistic boundary condition.
@@ -53,9 +53,9 @@
 !-----Begin of the program.
 ! ====================================================================
 !     subroutine about input information.
-!	  call for basic information. 
+!     call for basic information. 
     CALL SelectorIn
-!	  call for node information in 1D.
+!     call for node information in 1D.
     CALL UzIn
 ! ====================================================================
 
@@ -67,7 +67,7 @@
     CALL Balance_Initial
 !     Diffusion model.
     CALL Diffusion_Model
-!	  Call for reference Evaportranspiration and division of E&T.
+!     Call for reference Evaportranspiration and division of E&T.
     CALL Upper_Boundary
 ! ====================================================================
 

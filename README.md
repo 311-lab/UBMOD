@@ -1,7 +1,7 @@
 # UBMOD
 
 ## Introduction
-This repository serves as the source code repository of the Unsaturated zone soil water Balance Model, known as UBMOD. The model a one-dimensional soil water balance model for simulating both downward and upward soil water movement. The model was designed by Wei Mao, Yan Zhu, Tianxing Zhao and Jinzhong yang. The [[Paper](https://www.sciencedirect.com/science/article/pii/S0022169418301562)] can be find here.  
+This repository serves as the source code repository of the Unsaturated zone soil water Balance Model, known as UBMOD. The model a one-dimensional soil water balance model for simulating both downward and upward soil water movement. The model was designed by Wei Mao, Yan Zhu, Tianxing Zhao and Jinzhong yang. The [[Paper](https://www.sciencedirect.com/science/article/pii/S0022169418301562)] can be find here or on the [ResearchGate](https://www.researchgate.net/publication/323442173_An_efficient_soil_water_balance_model_based_on_hybrid_numerical_and_statistical_methods?_sg=q8S8V9Eb6Ct40yGc2NyHwoQLvZ6XEGiZ1SGzkrUOiRPNUkymQiw67y3Sq0aNMrzDprT58t-7Ya6gnUbGSTlCPRSSDVfBhZOaulsV4tc9.bQr5DNomd45fSHevJ_yhWSs_N2CZQt6c20tVZreWD59xOQ-g5Pt4I2h_G4ve9qrr59Qkd8Pp7W9JYYdjgjn8wQ).  
 
 UBMOD can simulate both upward and downward flow in the unsaturated zone. The accommodation of the model to the upward flow, complex boudnary conditions, and soil heterogeneity conditions have been demonstrated. What's more, the model keeps mass balance well, and can give satisfactory results with coarse spatial and temporal discretization. Only four physical meaning soil hydraulic parameters are essential to calculate the soil water movement. All of these make the model more applicable in practice.
 

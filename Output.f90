@@ -77,9 +77,9 @@
 	
     WRITE(80,"(1X,F10.4\)") t,(th(j),j=1,Nlayer)
 	WRITE(80,"(1X,F10.4)") !th(Nlayer) 
-    WRITE(81,*)'Zone T="', t  
-    DO j=1,Nlayer
-        WRITE(81,*)th(j),zx(j)+dz(j)/2,dz(j)
-    ENDDO
+!    WRITE(81,*)'Zone T="', t  
+!    DO j=1,Nlayer
+!        WRITE(81,*)th(j),zx(j)+dz(j)/2,dz(j)
+!    ENDDO
 	
     END SUBROUTINE hthuz_out

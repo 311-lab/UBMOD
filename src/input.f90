@@ -4,40 +4,40 @@
 !   Purpose: Read information from file selector.in
 ! ====================================================================
 ! =========================Incoming variables=========================
-!	None
+!   None
 ! =========================Outcoming variables========================
-!	Hed			Character in the screen.
-!	LUnit		Unit of length.
-!	TUnit		Unit of time.
+!   Hed         Character in the screen.
+!   LUnit       Unit of length.
+!   TUnit       Unit of time.
 !   MUnit       Unit of mass.
 !   xConv       The conversion coefficient of length.
 !   tConv       The conversion coefficient of time.
 !   mConv       The conversion coefficient of mass.
-!	ifET		If meteorological data to calculate the ET.
+!   ifET        If meteorological data to calculate the ET.
 !   Bup         Flux upper boundary condition.
 !   Bdn         Flux lower boundary condition.
 !   lchem       If calculate the solute.
 !   parredis    The drainage function. 
 !   Dfit        The empirical formula of Diffusion.
-!	Nmat		The number of material.[-]
-!	NPar		Number of unsaturated hydraulic parameters.
-!	par(:,:)	The unsaturated parameter. 
-!	thf(:)		The field capacity.[-]
-!	thw(:)		The wilting point.[-]
-!	sp(4,:)		The discreted function of evaporation.[-]
+!   Nmat        The number of material.[-]
+!   NPar        Number of unsaturated hydraulic parameters.
+!   par(:,:)	The unsaturated parameter. 
+!   thf(:)      The field capacity.[-]
+!   thw(:)      The wilting point.[-]
+!   sp(4,:)     The discreted function of evaporation.[-]
 !   ths(:)      The saturated water content.
-!	dt			The time step.[d]
+!   dt          The time step.[d]
 !   ddn         Diffusion related.
-!	MPL			Number of time  to print the outcoming.
-!	t			The time.[d]
-!	date		the time but in a date style.[yyyymmdd]
-!	tEnd		the maxinum of time.[d]
-!	TPrint(:)	the print time.[d]
+!   MPL         Number of time  to print the outcoming.
+!   t           The time.[d]
+!   date        the time but in a date style.[yyyymmdd]
+!   tEnd        the maxinum of time.[d]
+!   TPrint(:)	the print time.[d]
 !   interval    The Total Calculation Time (Unit Day).
 ! =========================related files==============================
-!	selector.in
+!   selector.in
 ! =========================related functions==========================
-!	None.
+!   None.
 ! ====================================================================
     SUBROUTINE SelectorIN
     USE parm
@@ -45,53 +45,51 @@
 
     INTEGER (KIND=KI) :: i,j
     CHARACTER (LEN=100) :: Hed
-	
+
     WRITE(*,*) 'Reading Basic information' 
-	READ(33,*) 
-	READ(33,*)
-	READ(33,'(A100)') Hed
-	WRITE(*,*) 
-	WRITE(*,*) Hed
-	READ(33,*) 
-	READ(33,*) LUnit,TUnit,MUnit
+    READ(33,*) 
+    READ(33,*)
+    READ(33,'(A100)') Hed
+    WRITE(*,*) 
+    WRITE(*,*) Hed
+    READ(33,*) 
+    READ(33,*) LUnit,TUnit,MUnit
     CALL Conversion(LUnit, TUnit, MUnit, xConv, tConv, mConv)
     READ(33,*)
-	READ(33,*) ifET,Bup,Bdn,lchem,Drng,Dfit
-	WRITE(*,*) 'Reading Material information'
-	READ(33,*)
+    READ(33,*) ifET,Bup,Bdn,lchem,Drng,Dfit
+    WRITE(*,*) 'Reading Material information'
+    READ(33,*)
     READ(33,*)
     READ(33,*) NMat,NPar
-	READ(33,*) 
-	DO i=1,NMat
-        READ(33,*) (Par(j,i),j=1,NPar),thF(i),thW(i),(sp(j,i),j=1,4)
-	    ths(i)=par(2,i)
-        par(4,i) = par(4,i)*tConv/xConv
-	ENDDO
+    READ(33,*) 
+    DO i=1,NMat
+    READ(33,*) (Par(j,i),j=1,NPar),thF(i),thW(i),(sp(j,i),j=1,4)
+        ths(i)=par(2,i)
+    par(4,i) = par(4,i)*tConv/xConv
+    ENDDO
 
     WRITE(*,*) 'Reading Time information'
-	READ(33,*)
-	READ(33,*)
-	READ(33,*) dt,ddn,MPL,MMPL
+    READ(33,*)
+    READ(33,*)
+    READ(33,*) dt,ddn,MPL,MMPL
     dt = dt/tConv
-	READ(33,*)
-	READ(33,*) date,t,tEnd
+    READ(33,*)
+    READ(33,*) date,t,tEnd
     t = t/tConv
     tEnd = tEnd/tConv
-	READ(33,*)
-	READ(33,*) (TPrint(i),i=1,MPL)
+    READ(33,*)
+    READ(33,*) (TPrint(i),i=1,MPL)
 !   READ(33,*)
-!	READ(33,*) (TB(i),i=1,MMPL)
-	interval=int(tEnd-t+0.99_KR)! The total simulation period.
+!   READ(33,*) (TB(i),i=1,MMPL)
+    interval=int(tEnd-t+0.99_KR)! The total simulation period.
 
 !   The solute transport module.
     IF(lchem) THEN
-	    PAUSE
+        PAUSE
     ENDIF
-	
     CALL Examine1
-    
     CLOSE(33)
-	RETURN
+    RETURN
     END SUBROUTINE SelectorIN
 
 ! ====================================================================
@@ -100,18 +98,18 @@
 !   Purpose: read information in the uz.in file for 1D model.
 ! ====================================================================                        
 ! =========================Incoming variables=========================
-!	None
+!   None
 ! =========================Outcoming variables========================
-!	Nlayer		Number of nodes in every column.
-!	zx			The z coordinates of every node descend from up to down.[m]
-!	dz		    The thickness of every layer.
-!	MATuz		The material number.	
+!   Nlayer      Number of nodes in every column.
+!   zx          The z coordinates of every node descend from up to down.[m]
+!   dz          The thickness of every layer.
+!   MATuz       The material number.	
 !   th(:)       Initial profile moisture.
 !   Conc(:)     Initial solute concentration.
 ! =========================related files==============================
-!	uz.in
+!   uz.in
 ! =========================related functions==========================
-!	None.
+!   None.
 ! ====================================================================
     SUBROUTINE uzIN
     USE parm
@@ -121,8 +119,8 @@
     WRITE(*,*) 'Reading information for unsaturated zone'
 
 !   the Nlayer
-	READ(32,*)
-	READ(32,*) Nlayer
+    READ(32,*)
+    READ(32,*) Nlayer
     
     IF (.NOT. ALLOCATED(dz)) ALLOCATE(dz(Nlayer))
     IF (.NOT. ALLOCATED(zx)) ALLOCATE(zx(Nlayer+1))
@@ -142,17 +140,17 @@
     th = 0.0_KR
     
 !   the height.
-	READ(32,*)
-	READ(32,*) (zx(j),j=1,Nlayer+1,1) !bottom to surface!
+    READ(32,*)
+    READ(32,*) (zx(j),j=1,Nlayer+1,1) !bottom to surface!
     zx = zx/xConv
     
     DO j=1,Nlayer
-		dz(j)=zx(j+1)-zx(j) ! The thickness of each layer
+        dz(j)=zx(j+1)-zx(j) ! The thickness of each layer
     ENDDO	 
-!	the material kind.
+!   the material kind.
     READ(32,*)
-	READ(32,*) (MATuz(j),j=1,Nlayer,1)
-!	the initial profile moisture.
+    READ(32,*) (MATuz(j),j=1,Nlayer,1)
+!   the initial profile moisture.
     READ(32,*)
     READ(32,*) (th(j),j=1,Nlayer,1)
     

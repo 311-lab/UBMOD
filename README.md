@@ -1,2 +1,5 @@
 # UBMOD
-An efficient soil water balance model based on hybrid numerical and statistical methods
+
+----------
+
+This repository serves as the public source code repository of the Unsaturated zone soil water Balance Model, known as UBMOD.

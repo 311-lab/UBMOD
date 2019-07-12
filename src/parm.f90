@@ -15,7 +15,7 @@
       INTEGER, PUBLIC, PARAMETER :: NMatD=8          ! Max numbers of soil materials (Vertical)
       INTEGER, PUBLIC, PARAMETER :: UNmatD=10        ! Max numbers of hydraulic parameters.
       INTEGER, PUBLIC, PARAMETER :: NlayerD=130      ! Max numbers of soil layers.
-      INTEGER, PUBLIC, PARAMETER :: numc=1		     ! Max numbers of plant species.
+      INTEGER, PUBLIC, PARAMETER :: numc=1           ! Max numbers of plant species.
 
       INTEGER (KIND=KI) :: Nlayer     ! Numbers of real soil layers.
       INTEGER (KIND=KI) :: Nmat       ! Numbers of soil materials.
@@ -23,7 +23,7 @@
       INTEGER (KIND=KI) :: MMPL       ! Print related.
       INTEGER (KIND=KI) :: interval	  ! The total calculation time (Unit day).
       INTEGER (KIND=KI) :: Bup        ! Upper boundary condition 0/1/2.
-      INTEGER (KIND=KI) :: Bdn 		  ! Lower boundary condition 0/2.
+      INTEGER (KIND=KI) :: Bdn        ! Lower boundary condition 0/2.
       INTEGER (KIND=KI) :: Npar       ! Numbers of soil hydraulic parameters.
       INTEGER (KIND=KI) :: Drng       ! Which Drainage Function 1/2/3/4/5/6/7.
       INTEGER (kind=KI) :: Dfit       ! The Empirical Formula of Diffusion -3/-2/-1/1/2/3.
@@ -64,14 +64,14 @@
       
       REAL (KINd=KR), ALLOCATABLE :: evatra(:,:),precip(:,:)
 
-      REAL (KIND=KR), DIMENSION(MPLD) :: TPrint			! The print time.
+      REAL (KIND=KR), DIMENSION(MPLD) :: TPrint         ! The print time.
       REAL (KIND=KR), DIMENSION(2,MMPLD) :: up          ! Met.in file, Upper input.
       REAL (KIND=KR), DIMENSION(2,MMPLD) :: dn          ! Met.in file, Lower input.
       REAL (KIND=KR), DIMENSION(NMatD) :: ths           ! ths for each materials.
       REAL (KIND=KR), DIMENSION(NMatD,UNmatD) :: Par    ! The Hydraulic parameters.
-      REAL (KIND=KR), DIMENSION(4,UNmatD) :: sp			! The Evaporation cumulative distribution function.
-      REAL (KIND=KR), DIMENSION(UnmatD) :: thF			! Field capacity.
-      REAL (KIND=KR), DIMENSION(UnmatD) :: thw			! Wilting point.
+      REAL (KIND=KR), DIMENSION(4,UNmatD) :: sp         ! The Evaporation cumulative distribution function.
+      REAL (KIND=KR), DIMENSION(UnmatD) :: thF          ! Field capacity.
+      REAL (KIND=KR), DIMENSION(UnmatD) :: thw          ! Wilting point.
 
 !     1D  model.
       REAL (KIND=KR), ALLOCATABLE :: dz(:)     ! Thickness of Each Layer.

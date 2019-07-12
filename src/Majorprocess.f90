@@ -37,15 +37,15 @@
     INTEGER (kind=KI) :: i, j, m
           
     qairtemp = qair*dt
-	DO j=1,Nlayer
-	    m=MATuz(j)
-	    thss=par(2,m)
+    DO j=1,Nlayer
+        m=MATuz(j)
+        thss=par(2,m)
 
-	    IF (qairtemp>(thss-th(j))*dz(j)) THEN	
-		    qairtemp=qairtemp-(thss-th(j))*dz(j)
-		    th(j)=thss
+        IF (qairtemp>(thss-th(j))*dz(j)) THEN	
+            qairtemp=qairtemp-(thss-th(j))*dz(j)
+            th(j)=thss
         ELSE
-		    th(j)=th(j)+qairtemp/dz(j)
+            th(j)=th(j)+qairtemp/dz(j)
             qairtemp=0.0_KR
         ENDIF
     ENDDO
@@ -57,7 +57,7 @@
 !     
 !     Purpose: calculate the redistribution of the water
 ! ====================================================================      
-	SUBROUTINE redistribution 
+    SUBROUTINE redistribution 
     USE parm
     IMPLICIT NONE
     
@@ -65,15 +65,14 @@
     REAL (kind=KR) :: step,perco,excess,temp,thnew1,sum0,sum1,beta1,delta
     REAL (kind=KR) :: alpha,belta1,A,n,Se,unsatM,unsatK
 
-!	
     step=dt
-	TotalPerco=0.0_KR
+    TotalPerco=0.0_KR
 
-!	drainage
+!    drainage
 ! ==================================================================== 
          ! do   
     perco=0.0_KR
-	temp=0.0_KR
+    temp=0.0_KR
     sum0 = 0.0_KR
     sum1 = 0.0_KR
               
@@ -84,15 +83,15 @@
     ENDDO
               
     DO j=1,Nlayer
-		m=MATuz(j)
-		th(j)=th(j)+temp
+        m=MATuz(j)
+        th(j)=th(j)+temp
 
-		IF (Drng==1) THEN !SWAT equation linear
+        IF (Drng==1) THEN !SWAT equation linear
             IF (th(j)>thf(m)) THEN
-			    thnew1=thF(m)+(th(j)-thF(m))*EXP(-par(5,m)*step/dz(j)/(par(2,m)-thf(m)))
+                thnew1=thF(m)+(th(j)-thF(m))*EXP(-par(5,m)*step/dz(j)/(par(2,m)-thf(m)))
             ELSE
-			    thnew1=th(j)
-			ENDIF	
+                thnew1=th(j)
+            ENDIF
         ELSEIF (Drng==2) THEN !exp(-alfa*theta);Kendy model; par(6) 10-30
             IF (th(j)>thf(m)) THEN
                 alpha=par(3,m)
@@ -100,18 +99,17 @@
                     WRITE(*,*)"Please check alpha"
                     STOP
                 ENDIF
-			    thnew1=ths(M)-(ths(M)-thw(M))/alpha*log(alpha*par(5,m)*step/dz(j)/(ths(M)-thw(M)) &
-      			        +exp(alpha*(ths(M)-th(j))/(ths(M)-thw(M))))
-			ELSE
-			    thnew1=th(j)
-			ENDIF
+                thnew1=ths(M)-(ths(M)-thw(M))/alpha*log(alpha*par(5,m)*step/dz(j)/(ths(M)-thw(M)) &
+                      +exp(alpha*(ths(M)-th(j))/(ths(M)-thw(M))))
+            ELSE
+                thnew1=th(j)
+            ENDIF
         ELSEIF (Drng==3) THEN !(theta)beta; Gardner model; beta K=0.002 ks
-			IF (th(j)>thf(m)) THEN
-			    Beta1=-2.655/log10(thf(m)/ths(m))
-			    thnew1=(th(j)**(1-beta1)+(beta1-1)*par(5,m)*step/dz(j)/ths(M)**beta1)**(1/(1-beta1))
-
-			ELSE
-			    thnew1=th(j)
+            IF (th(j)>thf(m)) THEN
+                Beta1=-2.655/log10(thf(m)/ths(m))
+                thnew1=(th(j)**(1-beta1)+(beta1-1)*par(5,m)*step/dz(j)/ths(M)**beta1)**(1/(1-beta1))
+            ELSE
+                thnew1=th(j)
             ENDIF
         ELSEIF (Drng==4) THEN !
             IF (th(j)>thf(m)) THEN
@@ -122,9 +120,9 @@
             ENDIF
         ELSEIF (Drng==5) THEN !
             IF (th(j)>thf(m)) THEN
-				thnew1=thF(m)+dz(j)*(par(2,m)-thF(m))**2/(par(5,m)*step+dz(j)*(par(2,m)-thF(m))**2/(th(j)-thF(m)))
+                thnew1=thF(m)+dz(j)*(par(2,m)-thF(m))**2/(par(5,m)*step+dz(j)*(par(2,m)-thF(m))**2/(th(j)-thF(m)))
             ELSE
-			    thnew1=th(j)
+                thnew1=th(j)
             ENDIF
         ELSEIF (Drng==6) THEN  ! 
             IF (th(j)>thf(m)) THEN
@@ -136,17 +134,15 @@
             ENDIF
         ELSEIF (Drng==7) THEN !
             IF (th(j)>thf(m)) THEN
-				Se=MIN(1.0, (th(j)-par(1,m))/(par(2,m)-par(1,m)))
-				unsatM=1.-1/1.56
-				unsatK=par(5,m)*Se**0.5*(1- (1-se**(1/unsatM))**unsatM)**2
-				thnew1=thF(M)+(th(j)-thF(M))*EXP(-unsatK*step/dz(j)/(par(2,m)-thf(m)))
+                Se=MIN(1.0, (th(j)-par(1,m))/(par(2,m)-par(1,m)))
+                unsatM=1.-1/1.56
+                unsatK=par(5,m)*Se**0.5*(1- (1-se**(1/unsatM))**unsatM)**2
+                thnew1=thF(M)+(th(j)-thF(M))*EXP(-unsatK*step/dz(j)/(par(2,m)-thf(m)))
             ELSE
-			    thnew1=th(j)
+                thnew1=th(j)
             ENDIF
-        ENDIF								
-			    
+        ENDIF
         perco=-(thnew1-th(j))*dz(j) !
-		
         IF (j<Nlayer) THEN
             temp=perco/dz(j+1) !
         ELSEIF (j==Nlayer) THEN
@@ -154,32 +150,30 @@
         ENDIF
         th(j)=thnew1					   !
     ENDDO  !
-!   
-              
+
     j=Nlayer
-	m=MATuz(j)
-              
-	IF (bdn==0) THEN ! 
+    m=MATuz(j)          
+    IF (bdn==0) THEN ! 
 !           
-		th(j)=th(j)+perco/dz(j)
-		perco=0.
+        th(j)=th(j)+perco/dz(j)
+        perco=0.
     ELSEIF (bdn==2) THEN !
         perco=perco
     ENDIF
-	        
+    
     TotalPerco=TotalPerco+perco
-!	 
-	excess=0. !
+!
+    excess=0. !
 
-	DO j=Nlayer,1,-1
-		m=MATuz(j)
-		th(j)=th(j)+excess/dz(j)
-		        
+    DO j=Nlayer,1,-1
+        m=MATuz(j)
+        th(j)=th(j)+excess/dz(j)
+        
         IF (th(j)>par(2,m)) THEN	
-			excess=(th(j)-par(2,m))*dz(j)
-			th(j)=par(2,m)
+            excess=(th(j)-par(2,m))*dz(j)
+            th(j)=par(2,m)
         ELSE !
-			excess=0.
+            excess=0.
         ENDIF
     
     ENDDO
@@ -194,17 +188,17 @@
     END SUBROUTINE redistribution
     
 ! ====================================================================
-!	Subroutine Water_SetET
+!   Subroutine Water_SetET
 ! ====================================================================
-!	MATuz(:)	material number
-!	thw(:)		wilting point
-!	thf(:)		field capacity
+!   MATuz(:)    material number
+!   thw(:)      wilting point
+!   thf(:)      field capacity
 ! ====================================================================
-!	tra(:)		the actual crop transpiration [mm/d]
-!	epa(:)		the actual soil evaporation [mm/d]
-!	sink1d(:)	the total source/sink term [m/d]
+!   tra(:)      the actual crop transpiration [mm/d]
+!   epa(:)      the actual soil evaporation [mm/d]
+!   sink1d(:)   the total source/sink term [m/d]
 ! ====================================================================
-	SUBROUTINE SetET
+    SUBROUTINE SetET
     USE parm
     IMPLICIT NONE
     
@@ -218,9 +212,9 @@
     REAL (kind=KR) :: Epy, Tpy
 
 !
-!		re zero the Tra and epa.
+! re zero the Tra and epa.
     Tra=0.0_KR
-	Epa=0.0_KR
+    Epa=0.0_KR
     p=0.0_KR
     sum0 = 0.0_KR
     sum1 = 0.0_KR
@@ -228,26 +222,26 @@
     DO i = 1,Nlayer
         sum0 = sum0+th(i)*dz(i)
     ENDDO
-	DO j=1,Nlayer
+    DO j=1,Nlayer
         m=MATuz(j)
-		sink1d(j)=0.
-		thdry=(Thw(M)+par(1,M))/2. !
-		fEact=MAX((Th(j)-Thdry)/(ThF(M)-Thdry),0D0)
+        sink1d(j)=0.
+        thdry=(Thw(M)+par(1,M))/2. !
+        fEact=MAX((Th(j)-Thdry)/(ThF(M)-Thdry),0D0)
 !        fEact = 1.0
-		Eact=fEact*Epi(j)*dt
-		Epa=Epa+Eact !m/d
+        Eact=fEact*Epi(j)*dt
+        Epa=Epa+Eact !m/d
         p=ptab+0.04*(5-Tri(j))
-		thcr=Thw(M)+(1-p)*(ThF(M)-Thw(M)) 
-		fTact=MAX(0D0,MIN(1D0,(Th(j)-Thw(M))/(thcr-Thw(M))))
-		Tact=fTact*Tri(j)*dt
-		Tra=Tra+Tact !m/d
-		Sink1d(j)=Tact+Eact !m/d
+        thcr=Thw(M)+(1-p)*(ThF(M)-Thw(M)) 
+        fTact=MAX(0D0,MIN(1D0,(Th(j)-Thw(M))/(thcr-Thw(M))))
+        Tact=fTact*Tri(j)*dt
+        Tra=Tra+Tact !m/d
+        Sink1d(j)=Tact+Eact !m/d
         !write(99,"(132F10.7)")fEact,fTact,Sink1d
     ENDDO
 
     DO j=1,Nlayer
         m=MATuz(j)
-		Th(j)=Th(j)-sink1d(j)/dz(j)
+        Th(j)=Th(j)-sink1d(j)/dz(j)
         IF (Th(j) < par(1,m)) THEN
             IF (j == 1) THEN
                 Th(j+1) = Th(j+1)+Th(j)-par(1,m)
@@ -272,7 +266,7 @@
     delta = sum0-sum1-sum(Sink1d)
    
     !WRITE(99,"(130F10.7)")th
-		   
+
     END SUBROUTINE SetET
       
 ! ====================================================================
@@ -373,15 +367,15 @@
                     th1(i+1) = th1(i+1)+mq
                 ELSEIF (i == Nlayer) THEN
                     DO k=Nlayer,1,-1
-		                m=MATuz(k)
-		                IF (k < Nlayer) THEN
+                        m=MATuz(k)
+                        IF (k < Nlayer) THEN
                             th1(k)=th1(k)+mq
                         ENDIF
-		                IF (th1(k)>par(2,m)) THEN	
-			                mq=th1(k)-par(2,m)
-			                th1(k)=par(2,m)
+                        IF (th1(k)>par(2,m)) THEN
+                            mq=th1(k)-par(2,m)
+                            th1(k)=par(2,m)
                         ELSE 
-			                mq=0.0_KR
+                            mq=0.0_KR
                         ENDIF
                     ENDDO
                 ENDIF
@@ -398,13 +392,13 @@
         !            th1(i-1) = th1(i-1) - mq
         !        ELSEIF (i == 1) THEN
         !            DO k=1,Nlayer
-		      !          m=MATuz(k)
-		      !          th(k)=th(k)-mq
-		      !          IF (th(k)<par(1,m)) THEN	
-			     !           mq=par(1,m)-th(k)
-			     !           th(k)=par(1,m)
+              !          m=MATuz(k)
+              !          th(k)=th(k)-mq
+              !          IF (th(k)<par(1,m)) THEN	
+                 !           mq=par(1,m)-th(k)
+                 !           th(k)=par(1,m)
         !                ELSE 
-			     !           mq=0.
+                 !           mq=0.
         !                ENDIF
         !            ENDDO
         !        ENDIF
@@ -443,11 +437,11 @@
 !   Purpose: Solve the tridiagonal matrix Ax=f.
 ! ====================================================================                        
 ! =========================Incoming variables=========================
-!	A			The tridiagonal.
-!	B		    The right item.
-!	N		    The dimension of the matrix.	
+!   A        The tridiagonal.
+!   B        The right item.
+!   N        The dimension of the matrix.
 ! =========================Outcoming variables========================
-!	x           The results.
+!   x           The results.
 ! ====================================================================
     SUBROUTINE chase(A,f,x,N)
     USE parm, ONLY : KI, KR, NlayerD

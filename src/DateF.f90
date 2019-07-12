@@ -52,9 +52,9 @@
 !            When the date is 1960-1-1, the result is 1.
 ! ====================================================================
 ! =========================Incoming variables=========================
-!	date        The imput date [yyyymmdd].
+!   date        The imput date [yyyymmdd].
 ! =========================Outcoming variables========================
-!	JDate       The different beween for the date and 1960-1-1.
+!   JDate       The different beween for the date and 1960-1-1.
 ! ====================================================================
     INTEGER Function JDate(date)
     IMPLICIT NONE
@@ -112,10 +112,10 @@
 !   Purpose: The new date when a date adds integer days.
 ! ====================================================================
 ! =========================Incoming variables=========================
-!	date        The imput date [yyyymmdd].
+!   date        The imput date [yyyymmdd].
 !   interval    The integer that will be added to the date [d].
 ! =========================Outcoming variables========================
-!	date1       the new date which has been added [yyyymmdd].
+!   date1       the new date which has been added [yyyymmdd].
 ! ====================================================================
     SUBROUTINE DateAdd(date,interval,date1)
     IMPLICIT NONE

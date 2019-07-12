@@ -4,18 +4,18 @@
 !   PROPOSE: the initial statistics.
 ! ====================================================================
 ! =========================Incoming variables=========================
-!   par(:,:)	The hydraulic parameters.
-!	th(:,:)		The soil water content.
-!	dz(:)	    The thickness of each layer.
-!	matuz(:)	The material serial number.
+!   par(:,:)    The hydraulic parameters.
+!   th(:,:)     The soil water content.
+!   dz(:)       The thickness of each layer.
+!   matuz(:)    The material serial number.
 ! =========================Outcoming variables========================
-!	voluz	    The initial water volumn [m3].
+!   voluz       The initial water volumn [m3].
 ! =========================related files==============================
-!	balance1d.dat
+!   balance1d.dat
 ! =========================related functions==========================
-!	None.
+!   None.
 ! ====================================================================
-	SUBROUTINE Balance_Initial
+    SUBROUTINE Balance_Initial
     USE parm
     IMPLICIT NONE
     
@@ -26,12 +26,12 @@
     CumT  = 0.0_KR
     sinkt = 0.0_KR
     sink1d = 0.0_KR
-	
+
     voluz=sum(th(1:Nlayer)*dz(1:Nlayer))  !!!The specific storage is ignored.
     WRITE(89,*)"Variables=t,voluz,Dvoluz,qair,qbtm,CumE,CumT,Error,Error%"
-	
+
     RETURN
-	END SUBROUTINE Balance_Initial
+    END SUBROUTINE Balance_Initial
 
 ! ====================================================================
 !   SUBROUTINE Diffusion_Model   
@@ -41,12 +41,12 @@
 ! =========================Incoming variables=========================
 !   Ks          Saturated soil hydrualic conductivity.
 ! =========================Outcoming variables========================
-!	Slope       Slope.
-!   Intercept	Intercept.
+!   Slope       Slope.
+!   Intercept   Intercept.
 ! =========================related files==============================
-!	None.
+!   None.
 ! =========================related functions==========================
-!	None.
+!   None.
 ! ====================================================================
     SUBROUTINE Diffusion_Model
     USE parm
@@ -126,11 +126,11 @@
 !   Bup          Up Boundary Condition -1/0/1/2.
 !   Bdn          Down Boundary Condition 0/2.
 ! =========================Outcoming variables========================
-!	None.
+!   None.
 ! =========================related files==============================
-!	None.
+!   None.
 ! =========================related functions==========================
-!	None.
+!   None.
 ! ==================================================================== 
     SUBROUTINE Upper_Boundary
     USE parm
@@ -142,8 +142,8 @@
         OPEN(110,file='Rh1D.in/'//trim(iof)//'/'//'01.et0',status='old')
         READ(110,*)
         OPEN(130,file='Rh1D.in/'//trim(iof)//'/'//'01.eti',status='old')
-	    OPEN(150,file='Rh1D.out/'//trim(iof)//'/'//'eta.dat',status='unknown')
-		WRITE(150,*)"Variables=DoY,   Ea,   Ta,   Date"
+        OPEN(150,file='Rh1D.out/'//trim(iof)//'/'//'eta.dat',status='unknown')
+        WRITE(150,*)"Variables=DoY,   Ea,   Ta,   Date"
         READ(130,*)
                 
         IF (.NOT. ALLOCATED(precip)) ALLOCATE(precip(2,interval))
@@ -199,12 +199,12 @@
 !   Purpose: interpolation
 ! ====================================================================
 ! =========================Incoming variables=========================
-!	n			The total numbers of the node.
-!	x		    The input value.
+!   n           The total numbers of the node.
+!   x           The input value.
 !   xy(2,:)     The first row is the value corresponding to x,
 !               the second row is the value corresponding to y.
 ! =========================Outcoming variables========================
-!	y		    The output value.
+!   y           The output value.
 ! ====================================================================
     SUBROUTINE FindY_Step(n,x,y,xy,flag)
     USE parm
@@ -224,13 +224,13 @@
         flag = n
         RETURN
     ENDIF
-	DO i=1,n-1
-	    IF (x > xy(1,i) .and. x <= (xy(1,i+1)+Tol)) THEN
+    DO i=1,n-1
+        IF (x > xy(1,i) .and. x <= (xy(1,i+1)+Tol)) THEN
             y=xy(2,i+1)
             flag = i+1
             RETURN
-	    ENDIF	    
+        ENDIF   
     ENDDO
-	
+
     END SUBROUTINE FindY_Step
     

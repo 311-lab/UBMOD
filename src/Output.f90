@@ -27,18 +27,17 @@
 ! ====================================================================
     SUBROUTINE BalanceT
     USE parm
-    
-    REAL (kind=KR) :: a,b
+
     REAL (kind=KR) :: dvol,Sdvol
     REAL (kind=KR) :: wbalt,wbalr,Swbalt,Swbalr
 
 !   calculate the total water storage[m]
-    voluz1=0.0
+    voluz1=0.0_KR
     DO j=1,Nlayer
         voluz1=voluz1+th(j)*dz(j)
     !     M=matuz(j)  modified by maowei 2016-10-09 16:34
     !     if(huz(i,j)>0) voluz1=voluz1+SSS(M)*huz(i,j)*dz(j)
-	ENDDO
+    ENDDO
 !    calculate the variation of the storage between t=(0,t)
     dvol=voluz1-voluz
     qairt=qairt+qair*dt
@@ -50,7 +49,7 @@
     CumT=CumT+Tra
     wbalt=dvol-qairt+qbtmt+sinkt
     wbalr = abs(wbalt*1D2)/MAX(abs(dvol),qair+qbtmt+sinkt)  !2017-04-05
-    IF (wbalr < Tol .and. wbalr >= 100._KR) THEN
+    IF (wbalt < Tol .and. abs(wbalr - 100._KR)<Tol) THEN
         wbalr = 0.0_KR
     ENDIF
     WRITE(89,"(f7.3,10E20.6E3)") t,voluz1,dvol,qairt,qbtmt,CumE,CumT,wbalt,wbalr
@@ -75,7 +74,7 @@
     SUBROUTINE hthuz_out
     USE parm
 
-    WRITE(80,"(1X,F10.4\)") t,(th(j),j=1,Nlayer)
+    WRITE(80,"(1X,F10.4\)") t,(th(Obs(i)),i=1,NObs)
     WRITE(80,"(1X,F10.4)") !th(Nlayer) 
     !WRITE(81,*)'Zone T="', t  
     !DO j=1,Nlayer
@@ -83,3 +82,13 @@
     !ENDDO
 
     END SUBROUTINE hthuz_out
+    
+    SUBROUTINE thOut
+    USE parm
+    
+    WRITE(81,*)'Zone T="', t
+    WRITE(81,*)'th,  thickness'
+    DO j=1,Nlayer
+        WRITE(81,"(2F10.4)")th(j),dz(j)
+    ENDDO
+    END SUBROUTINE

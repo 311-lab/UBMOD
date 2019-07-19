@@ -52,8 +52,8 @@
         dz1(i)=zx(i+1)  
     ENDDO
 
-    CALL Crop(num,numc,date1,interval,iof)
-    CALL ep_tp(num,date1,interval,iof,ifet)
+    CALL Crop(num,numc,date1,MaxAL,iof)
+    CALL ep_tp(num,date1,MaxAL,iof,ifet)
 
     WRITE(cha1(1:2),"(i2.2)")num
     WRITE(cha2(1:2),"(i2.2)")num
@@ -65,14 +65,14 @@
     READ(4,*)cha1
     READ(5,*)cha1
 
-    DO j=1,interval		
+    DO j=1,MaxAL
         READ(4,*)date1,Nouse,ET0,Ep,Tp
         READ(5,*)Nouse,Nouse,rd            
 
         dtp=amax1(0.05*ET0,0.05)
         dtp=dtp/4.
         DO jj=1,4
-	    work(jj)=sp(jj,num)
+          work(jj)=sp(jj,num)
         ENDDO
         CALL Fdense(Nlayer,dz1,dtp,work,sed,4)
 

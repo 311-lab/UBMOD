@@ -35,7 +35,7 @@
     REAL (KIND=KR) :: t1, t2, Zero
     Zero = 0.0_KR
     
-    iof='/sim311/'	!the simulated project file fold
+    iof='/sim324/'	!the simulated project file fold
 
 !---Open the interface files. The relpath is used here.
 ! ====================================================================
@@ -46,7 +46,7 @@
     OPEN(90,file='Rh1D.out/'//trim(iof)//'/runtime.OUT',  status='unknown') ! Run time.
     OPEN(80,file='Rh1D.out/'//trim(iof)//'/thObs.dat',    status='unknown') ! Node data.
     OPEN(89,file='Rh1D.out/'//trim(iof)//'/balance1d.dat',status='unknown') ! Statistic boundary condition.
-    OPEN(81,file='Rh1D.out/'//trim(iof)//'/th.dat',       status='unknown') 
+    OPEN(81,file='Rh1D.out/'//trim(iof)//'/thprofile.dat',status='unknown') 
     OPEN(99,file='Rh1D.out/'//trim(iof)//'/error.txt',    status='unknown') ! Error message.
 ! ====================================================================
       
@@ -73,8 +73,6 @@
 
 !-----Begin time loop.
 100 CONTINUE
-    
-    CALL Tcontrol
 
 ! ====================================================================
 !   Set upper boundary condition.
@@ -99,7 +97,7 @@
 
 ! ====================================================================
 !     Thirdly, source/sink term.
-!	  open the Files that stored E&T and the rain, and the writen ETa.
+!     open the Files that stored E&T and the rain, and the writen ETa.
     IF(bup >= Zero) CALL SetET
 
 ! ====================================================================
@@ -108,26 +106,39 @@
 
 ! ====================================================================
 !     Output control.
- !	Output the hydraulic head and soil moisture in 1D model.
+!     Output the hydraulic head and soil moisture in 1D model.
     CALL Hthuz_out       
-!	Call for the water balance in 1D and 3D model.
+!   Call for the water balance in 1D and 3D model.
     CALL BalanceT   
-!	call for new time and time step.
+!   call for new time and time step.
     WRITE(*,*)"t=",sngl(t)
-            
-    IF (bup == 1) THEN
-        WRITE(150,'(A18,F10.3,2F10.6)')date,t,Epa,Tra
-        CALL DateAdd(date,1,date)
-        Epa=Zero
-        Tra=Zero
+    
+!   P-Level information
+    IF (abs(TPrint(Plevel)-t) < Tol) THEN
+        CALL thOut
+        Plevel = Plevel + 1
     ENDIF
-
-! ====================================================================
-    IF(t-Tend >= Zero) THEN
+    
+    IF(abs(t-Tend) <= Tol) THEN
         GOTO 200
-    ELSE
-        GOTO 100
     ENDIF
+    
+    IF (dt < dtOld) THEN
+        dt = dtOld
+    ENDIF
+    dtOld = dt
+    CALL Tcontrol
+    TLevel = TLevel + 1
+    t = t+dt
+    
+    !IF (bup == 1) THEN
+    !    WRITE(150,'(A18,F10.3,2F10.6)')date,t,Epa,Tra
+    !    CALL DateAdd(date,1,date)
+    !    Epa=Zero
+    !    Tra=Zero
+    !ENDIF
+
+    GOTO 100
     
 200 CALL CPU_time (t2)
     WRITE(90,*)'Real time [sec]',t2-t1

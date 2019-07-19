@@ -163,15 +163,16 @@
 ! ====================================================================
     SUBROUTINE Tcontrol
     USE parm
-    
-    PLevel = MPL+1
-    DO i = 1,MPL-1
-        IF(TPrint(i) <= t .and. TPrint(i+1) >= t) THEN
-            PLevel = i+1
-        ENDIF
-    ENDDO
-    
-    IF (t+dt>TPrint(PLevel) .and. t<(TPrint(PLevel)-1E-5)) THEN
+    IMPLICIT NONE
+    INTEGER (KIND=KI) :: i
+    REAL (KIND=KR) :: dt1
+
+    IF (t+dt>TAtm .and. t<TAtm-1E-8) THEN
+        dt1 = TAtm - t
+        dt = min(dt,dt1)
+    ENDIF
+
+    IF (t+dt>TPrint(PLevel) .and. t<(TPrint(PLevel)-1E-8)) THEN
         dt1 = TPrint(PLevel) - t
         dt = min(dt,dt1)
     ENDIF
@@ -180,6 +181,7 @@
         dt1 = Tend-t
         dt = min(dt,dt1)
     ENDIF
-    t = t+dt
+!    t = t+dt
     
     END SUBROUTINE Tcontrol
+

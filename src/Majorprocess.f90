@@ -148,7 +148,7 @@
         ELSEIF (j==Nlayer) THEN
             perco=-(thnew1-th(j))*dz(j)
         ENDIF
-        th(j)=thnew1					   !
+        th(j)=thnew1   !
     ENDDO  !
 
     j=Nlayer
@@ -285,9 +285,9 @@
     REAL (kind=KR) :: correction1,correction2
     REAL (kind=KR) :: mq,qku
     REAL (kind=KR) :: v
-    REAL (kind=KR), DIMENSION(NlayerD) :: th0,th1,thu,Courant
-    REAL (kind=KR), DIMENSION(NlayerD) :: D,S,dern
-    REAL (kind=KR), DIMENSION(NlayerD,NlayerD) :: A
+    REAL (kind=KR), DIMENSION(Nlayer) :: th0,th1,thu,Courant
+    REAL (kind=KR), DIMENSION(Nlayer) :: D,S,dern
+    REAL (kind=KR), DIMENSION(Nlayer,Nlayer) :: A
     REAL (kind=KR), DIMENSION(Nlayer) :: B
     REAL (kind=KR), DIMENSION(Nlayer) :: dq
     REAL (kind=KR), DIMENSION(Nlayer,2) :: qchange
@@ -444,13 +444,13 @@
 !   x           The results.
 ! ====================================================================
     SUBROUTINE chase(A,f,x,N)
-    USE parm, ONLY : KI, KR, NlayerD
+    USE parm, ONLY : KI, KR, Nlayer
     
     INTEGER (kind=KI) :: N
-    REAL (kind=KR) :: A(NlayerD,NlayerD), f(NlayerD), x(NlayerD)
-    REAL (kind=KR), DIMENSION(NlayerD) :: u,b
-    REAL (kind=KR), DIMENSION(NlayerD) :: y
-    REAL (kind=KR), DIMENSION(NlayerD) :: L,d,c,e
+    REAL (kind=KR) :: A(Nlayer,Nlayer), f(Nlayer), x(Nlayer)
+    REAL (kind=KR), DIMENSION(Nlayer) :: u,b
+    REAL (kind=KR), DIMENSION(Nlayer) :: y
+    REAL (kind=KR), DIMENSION(Nlayer) :: L,d,c,e
     
     u = 0.0_KR
     b = 0.0_KR

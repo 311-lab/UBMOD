@@ -11,12 +11,10 @@ NMat(参数分区)	NPar
 thr	ths	Alfa	n	Ks	thF	thW	sp(1:4)
 0.078	0.43	0.8	1.09	0.2496	0.27	0.1	0.4	0.7	0.9	1
 *** BLOCK C: TIME INFORMATION ******************************************
-dt	dnn	MPL	MMPL
-0.1	10	10	2
-date		tInit	tMax
-20050101	0	365
+dt	ddn	MPL
+0.1	10	10
+date		tInit	tEnd	MaxAL
+20050101	0	365	365
 TPrint(1),TPrint(2),...,TPrint(MPL)
 5 10 15 20 25 30 35 40 45 365
-tB(MMPL)
-0  365 
 *** END OF INPUT FILE 'SELECTOR.IN' ************************************

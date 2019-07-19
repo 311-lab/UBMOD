@@ -18,6 +18,7 @@
       INTEGER, PUBLIC, PARAMETER :: numc=1           ! Max numbers of plant species.
 
       INTEGER (KIND=KI) :: Nlayer     ! Numbers of real soil layers.
+      INTEGER (KIND=KI) :: NObs       ! Numbers of the observation points.
       INTEGER (KIND=KI) :: Nmat       ! Numbers of soil materials.
       INTEGER (KIND=KI) :: MPL        ! Print related.
       INTEGER (KIND=KI) :: MMPL       ! Print related.
@@ -30,6 +31,12 @@
       INTEGER (KIND=KI) :: ddn        ! Diffision process related.
       INTEGER (KIND=KI) :: Nup        ! Numbers of flux upper boundary node.
       INTEGER (KIND=KI) :: Ndn        ! Numbers of flux lower boundary node.
+      INTEGER (KIND=KI) :: MaxAL      ! Numbers of atmospheric data-records.
+      INTEGER (KIND=KI) :: Plevel
+      INTEGER (KIND=KI) :: Tlevel
+      INTEGER (KIND=KI) :: Alevel
+      INTEGER (KIND=KI), ALLOCATABLE :: Obs(:)    ! The observation points.
+      INTEGER (KIND=KI), ALLOCATABLE :: MATuz(:)  ! The Material Serial Number of Each Layer.
 
       LOGICAL (KIND=KI) :: lchem      ! If to calculate the solute.
       LOGICAL (KIND=KI) :: ifET       ! If to calculate the ET0 with P-M equation.
@@ -40,11 +47,14 @@
       CHARACTER (LEN=5) :: TUnit      ! Time Unit.
       CHARACTER (LEN=5) :: MUnit      ! Mass Unit.
           
-      real (kind=KR) :: Tol=1E-10_KR
+      REAL (KIND=KR) :: Tol=1E-10_KR
       REAL (KIND=KR) :: dt            ! Time step.
+      REAL (KIND=KR) :: dtOld
       REAL (KIND=KR) :: TotalPerco    ! The Percolation flux of the soil column.
       REAL (KIND=KR) :: t             ! Time.
-      REAL (KIND=KR) :: tEnd          ! End time.
+      REAL (KIND=KR) :: tinit         ! The initial time.
+      REAL (KIND=KR) :: tEnd          ! The endding time.
+      REAL (KIND=KR) :: tAtm
       REAL (KIND=KR) :: qair          ! Precipitation.
       REAL (KIND=KR) :: qqair 
       REAL (KIND=KR) :: qairt         ! Sum of Precipitation.
@@ -76,7 +86,6 @@
 !     1D  model.
       REAL (KIND=KR), ALLOCATABLE :: dz(:)     ! Thickness of Each Layer.
       REAL (KIND=KR), ALLOCATABLE :: zx(:)     ! The z Coordinates of Every Node Descend from Up to Down.
-      REAL (KIND=KR), ALLOCATABLE :: MATuz(:)  ! The Material Serial Number of Each Layer.
       REAL (KIND=KR), ALLOCATABLE :: th(:)     ! Soil Water Content.
       REAL (KIND=KR), ALLOCATABLE :: SInk1d(:) ! The Actural Evapotranspiration for Each Layer.
       REAL (KIND=KR), ALLOCATABLE :: Epi(:)    ! Evaporation for Each Layer.

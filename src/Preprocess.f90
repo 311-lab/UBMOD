@@ -146,10 +146,10 @@
         WRITE(150,*)"Variables=DoY,   Ea,   Ta,   Date"
         READ(130,*)
                 
-        IF (.NOT. ALLOCATED(precip)) ALLOCATE(precip(2,interval))
-        IF (.NOT. ALLOCATED(Evatra)) ALLOCATE(Evatra(2*Nlayer,interval))
+        IF (.NOT. ALLOCATED(precip)) ALLOCATE(precip(2,MaxAL))
+        IF (.NOT. ALLOCATED(Evatra)) ALLOCATE(Evatra(2*Nlayer,MaxAL))
         
-        DO i = 1,interval
+        DO i = 1,MaxAL
             READ(110,*) Nouse,precip(1,i),Nouse,Nouse,Nouse,precip(2,i)
             READ(130,*) Nouse,Nouse,(Evatra(j,i),j=1,2*Nlayer)
         ENDDO
@@ -183,9 +183,10 @@
     
     IF (bup == 1) THEN
 
-        CALL FindY_Step(interval,t,qair,precip,k)
+        CALL FindY_Step(MaxAL,t,qair,precip,k)
         Epi(1:Nlayer) = Evatra(1:NLayer,k)
         Tri(1:Nlayer) = Evatra(NLayer+1:2*Nlayer,k)
+        tAtm = k
 
     ELSEIF (bup == 2) THEN
         CALL FindY_Step(Nup,t,qair,up,k)

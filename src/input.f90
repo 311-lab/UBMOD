@@ -71,17 +71,20 @@
     WRITE(*,*) 'Reading Time information'
     READ(33,*)
     READ(33,*)
-    READ(33,*) dt,ddn,MPL,MMPL
+    READ(33,*) dt,ddn,MPL!,MMPL
     dt = dt/tConv
+    dtOld = dt
     READ(33,*)
-    READ(33,*) date,t,tEnd
-    t = t/tConv
+    MaxAL = 0
+    READ(33,*) date,tinit,tEnd,MaxAL
+    t = tinit/tConv+dt
     tEnd = tEnd/tConv
     READ(33,*)
     READ(33,*) (TPrint(i),i=1,MPL)
 !   READ(33,*)
 !   READ(33,*) (TB(i),i=1,MMPL)
-    interval=int(tEnd-t+0.99_KR)! The total simulation period.
+!    interval=int(tEnd-t+0.99_KR)! The total simulation period.
+    Plevel = 1
 
 !   The solute transport module.
     IF(lchem) THEN
@@ -113,14 +116,14 @@
 ! ====================================================================
     SUBROUTINE uzIN
     USE parm
-    
-    INTEGER (kind=KI) :: i, j
+    CHARACTER (LEN=20) :: Text
+    INTEGER (KIND=KI) :: i, j
 
     WRITE(*,*) 'Reading information for unsaturated zone'
 
 !   the Nlayer
     READ(32,*)
-    READ(32,*) Nlayer
+    READ(32,*) Nlayer, Nobs
     
     IF (.NOT. ALLOCATED(dz)) ALLOCATE(dz(Nlayer))
     IF (.NOT. ALLOCATED(zx)) ALLOCATE(zx(Nlayer+1))
@@ -150,6 +153,14 @@
 !   the material kind.
     READ(32,*)
     READ(32,*) (MATuz(j),j=1,Nlayer,1)
+    IF (NObs > 0) THEN
+        IF (.NOT. ALLOCATED(Obs)) ALLOCATE(Obs(NObs))
+        READ(32,*)
+        READ(32,*) (Obs(j),j=1,NObs,1)
+        Text ='   Theta      '
+        WRITE(80,110) (Obs(j),j=1,NObs,1)
+        WRITE(80,120) (Text,j=1,NObs,1)
+    ENDIF    
 !   the initial profile moisture.
     READ(32,*)
     READ(32,*) (th(j),j=1,Nlayer,1)
@@ -157,6 +168,8 @@
     CALL Examine2
     
     CLOSE(32)
+110 FORMAT (///4x,5(5x,'Node(',i3,')',5x))
+120 FORMAT(/' time ',5(a20))
     RETURN
     END SUBROUTINE uzIN
 
